@@ -4,7 +4,7 @@ First build FpsLimiterLib project (Release x86) then DX9_FPS_LIMITER project (Re
 
 Features:
 
-Initially, the program was written for Castle Crashers speedruns, so DLL supports only X86 DX9 processes
+Initially, the program was written for Castle Crashers speedruns as a replacement to Bandicam FPS limiting functionality, so DLL supports only X86 DX9 processes
 
 DLL is embedded in the injector file
 
