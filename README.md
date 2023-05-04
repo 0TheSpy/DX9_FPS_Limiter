@@ -10,7 +10,7 @@ DLL is embedded in the injector file
 
 Interface of the injector is written on C++ GDI
 
-FPS restriction is carried out using a D3D9::Present hook
+FPS restriction is made using a D3D9::Present hook
 
 Change the FPS, button and mode (Hold/Toggle) at any time while target process is running
 
