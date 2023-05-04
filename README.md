@@ -8,7 +8,7 @@ Initially, the program was written for Castle Crashers speedruns, so DLL support
 
 DLL is embedded in the injector file
 
-Interface of the injector is written on GDI
+Interface of the injector is written on C++ GDI
 
 FPS restriction is carried out using a D3D9::Present hook
 
