@@ -4,13 +4,13 @@ First build FpsLimiterLib project (Release x86) then DX9_FPS_LIMITER project (Re
 
 Features:
 
-Initially, the program was written for Castle Crashers speedruns, so it supports only X86 DX9 processes
+Initially, the program was written for Castle Crashers speedruns, so DLL supports only X86 DX9 processes
+
+DLL is embedded in the injector file
 
 Interface of the injector is written on GDI
 
 FPS restriction is carried out using a D3D9::Present hook
-
-DLL is embedded in the injector file
 
 Change the FPS, button and mode (Hold/Toggle) at any time while target process is running
 
