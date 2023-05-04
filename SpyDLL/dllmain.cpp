@@ -24,6 +24,7 @@ struct args
     int fps;
     int key;
     bool hold;
+    DWORD proc_unused;
 };
 
 #ifdef DEBUG
