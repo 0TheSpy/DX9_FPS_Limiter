@@ -20,7 +20,7 @@ Program settings are stored in the Registry
 
 DLL injects in the specified process automatically 
 
-When the target process is closed, the injector will resume await
+When the target process is closed, the injector will continue to await
 
 When closing injector, the hooks inside the process are removed
 
