@@ -15,24 +15,17 @@ using namespace std;
 
 string author = "Author: 0TheSpy";
 
-bool hold = 0;
-struct args
-{
-	int fps;
-	int key;
-	bool hold;
-}; 
-
-struct args_1
+struct pass_args
 {
 	int fps;
 	int key;
 	bool hold; 
 	char* proc; 
 }; 
-args_1 injarg;
-char procname_[256];
 
+pass_args injarg;
+char procname_[256];
+bool hold = 0;
 int injectcount_global = 0;
 int hk = 45; 
 
@@ -42,8 +35,7 @@ LONG GetDWORDRegKey(HKEY hKey, const std::string& strValueName, DWORD& nValue, D
 	DWORD dwBufferSize(sizeof(DWORD));
 	DWORD nResult(0);
 	LONG nError = ::RegQueryValueEx(hKey,strValueName.c_str(),0,NULL,reinterpret_cast<LPBYTE>(&nResult),&dwBufferSize);
-	if (ERROR_SUCCESS == nError)
-		nValue = nResult; 
+	if (ERROR_SUCCESS == nError) nValue = nResult; 
 	return nError;
 }
 
@@ -52,8 +44,7 @@ LONG GetBoolRegKey(HKEY hKey, const std::string& strValueName, bool& bValue, boo
 	DWORD nDefValue((bDefaultValue) ? 1 : 0);
 	DWORD nResult(nDefValue);
 	LONG nError = GetDWORDRegKey(hKey, strValueName.c_str(), nResult, nDefValue);
-	if (ERROR_SUCCESS == nError)
-		bValue = (nResult != 0) ? true : false; 
+	if (ERROR_SUCCESS == nError) bValue = (nResult != 0) ? true : false; 
 	return nError;
 }
 
@@ -64,8 +55,7 @@ LONG GetStringRegKey(HKEY hKey, const std::string& strValueName, std::string& st
 	DWORD dwBufferSize = sizeof(szBuffer);
 	ULONG nError;
 	nError = RegQueryValueEx(hKey, strValueName.c_str(), 0, NULL, (LPBYTE)szBuffer, &dwBufferSize);
-	if (ERROR_SUCCESS == nError)
-		strValue = szBuffer; 
+	if (ERROR_SUCCESS == nError) strValue = szBuffer; 
 	return nError;
 }
 
@@ -254,8 +244,8 @@ bool injected = false;
 DWORD dllptr = 0;
 
  
-bool Inject(args_1* inject_args);
-void IsProcessAlive(args_1 * inject_args)
+bool Inject(pass_args* inject_args);
+void IsProcessAlive(pass_args * inject_args)
 {
 	DWORD exitcode = STILL_ACTIVE;
 	while (exitcode == STILL_ACTIVE)
@@ -280,15 +270,12 @@ bool IsX64win()
 	else return TRUE;
 } 
  
-bool Inject(args_1 * inject_args)
+bool Inject(pass_args * inject_args)
 {	
 	injectcount_global++;
-	int injectcount = injectcount_global;
-
-	char* procname = inject_args->proc; int fps = inject_args->fps; int hkey = inject_args->key; bool hold = inject_args->hold;
-
-	printfdbg("injectargs %d %d %d %s\n", fps, hkey, hold, procname); 
-	  
+	int injectcount = injectcount_global; 
+	char* procname = inject_args->proc; 
+	printfdbg("injectargs %d %d %d %s\n", inject_args->fps, inject_args->key, inject_args->hold, procname); 
 	DWORD procID = FindProcByName(procname);
 
 #ifdef DEBUG
@@ -375,10 +362,9 @@ bool Inject(args_1 * inject_args)
 		EnableWindow(hwndEdit_proc, 0);
 		CreateThread(0, 0, (LPTHREAD_START_ROUTINE)IsProcessAlive, &injarg, 0, 0);
 	}
-
-	args passarg = { fps, hkey, hold };
-	LPVOID param = VirtualAllocEx(hProcess, NULL, sizeof(args), MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
-	WriteProcessMemory(hProcess, param, &passarg, sizeof(args), 0);
+	 
+	LPVOID param = VirtualAllocEx(hProcess, NULL, sizeof(pass_args), MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
+	WriteProcessMemory(hProcess, param, inject_args, sizeof(pass_args), 0);
 
 	HANDLE hLoadThread_setfpshotkey = CreateRemoteThread(hProcess, 0, 0,
 		(LPTHREAD_START_ROUTINE)GetProcAddressEx(hProcess, dllptr, "setFpsHotkey"),
@@ -596,7 +582,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		  
 		ReleaseDC(hwnd, hdc); 
 
-		CreateWindow(TEXT("button"), TEXT("Save settings"),
+		CreateWindow(TEXT("button"), TEXT("Save Settings"),
 			WS_VISIBLE | WS_CHILD,
 			20, 180, 180, 25,
 			hwnd, (HMENU)1, NULL, NULL);
