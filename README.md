@@ -23,3 +23,5 @@ DLL injects in the specified process automatically
 When the target process is closed, the injector resumes its awaiting
 
 When closing injector, the hooks inside the process are removed
+
+Does not conflict with OBS and other recording programs
