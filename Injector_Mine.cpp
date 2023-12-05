@@ -297,7 +297,7 @@ bool Inject(pass_args * inject_args)
 	{
 		if (injectcount != injectcount_global)
 			return 0;
-		printfdbg("Waiting for d3d9.dll...\n", procname);
+		printfdbg("Waiting for d3d9.dll...\n");
 		d3d9_dll = GetModuleBaseEx(procID, "d3d9.dll");
 		Sleep(500);
 	}
